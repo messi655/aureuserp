@@ -104,6 +104,7 @@ class TaskStageResource extends Resource
                             ->body(__('projects::filament/clusters/configurations/resources/task-stage.table.actions.restore.notification.body')),
                     ),
                 Tables\Actions\DeleteAction::make()
+                    ->hidden(fn ($record) => $record->tasks->isNotEmpty())
                     ->successNotification(
                         Notification::make()
                             ->success()
@@ -142,7 +143,8 @@ class TaskStageResource extends Resource
                                 ->body(__('projects::filament/clusters/configurations/resources/task-stage.table.bulk-actions.force-delete.notification.body')),
                         ),
                 ]),
-            ]);
+            ])
+            ->checkIfRecordIsSelectableUsing(fn ($record) => ! $record->tasks->isNotEmpty());
     }
 
     public static function getPages(): array
