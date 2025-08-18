@@ -11,9 +11,9 @@ class Summary extends Component
     public $products = [];
 
     #[Reactive]
-    public $currency = [];
+    public $currency = null;
 
-    public function mount($products, $currency)
+    public function mount($products, $currency = null)
     {
         $this->products = $products ?? [];
 
