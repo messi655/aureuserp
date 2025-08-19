@@ -209,15 +209,9 @@ class InvoiceResource extends Resource
                                             ->relationship('company', 'name')
                                             ->searchable()
                                             ->preload()
-                                            ->default(Auth::user()->default_company_id)
-                                            ->live()
-                                            ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set) {
-                                                $company = Company::find($get('company_id'));
-
-                                                if ($company?->currency_id) {
-                                                    $set('currency_id', $company->currency_id);
-                                                }
-                                            }),
+                                            ->reactive()
+                                            ->afterStateUpdated(fn (callable $set, $state) => $set('currency_id', Company::find($state)?->currency_id))
+                                            ->default(Auth::user()->default_company_id),
                                         Forms\Components\Select::make('currency_id')
                                             ->label(__('accounts::filament/resources/invoice.form.tabs.other-information.fieldset.additional-information.fields.currency'))
                                             ->relationship('currency', 'name')
