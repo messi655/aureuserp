@@ -144,7 +144,7 @@ class InstallERP extends Command
             $adminUser->assignRole($adminRoleName);
         }
 
-        $this->syncDefaultSettings($adminUser);
+        $this->backfillMissingCreatorIds($adminUser);
 
         $this->info("✅ Admin user '{$adminUser->name}' created and assigned the '{$this->getAdminRoleName()}' role successfully.");
     }
@@ -224,38 +224,20 @@ class InstallERP extends Command
     /**
      * Resolve default settings for the user.
      */
-    private function syncDefaultSettings($user)
+    public function backfillMissingCreatorIds($user)
     {
-        $settings = [
-            [
-                'group'   => 'general',
-                'name'    => 'default_company_id',
-                'payload' => $user->default_company_id,
-            ],
-            [
-                'group'   => 'general',
-                'name'    => 'default_role_id',
-                'payload' => Role::first()?->id,
-            ],
-            [
-                'group'   => 'currency',
-                'name'    => 'default_currency_id',
-                'payload' => Currency::first()?->id,
-            ],
+        $mappings = [
+            'activity_plans'              => 'creator_id',
+            'partners_partners'           => 'creator_id',
+            'unit_of_measure_categories'  => 'creator_id',
+            'unit_of_measures'            => 'creator_id',
+            'utm_campaigns'               => 'created_by',
+            'utm_mediums'                 => 'creator_id',
+            'utm_stages'                  => 'created_by',
         ];
 
-        foreach ($settings as $setting) {
-            if (! isset($setting['payload'])) {
-                continue;
-            }
-
-            DB::table('settings')->updateOrInsert(
-                ['group' => $setting['group'], 'name' => $setting['name']],
-                [
-                    'payload'    => json_encode($setting['payload']),
-                    'updated_at' => now(),
-                ]
-            );
-        }
+        collect($mappings)
+            ->filter(fn ($column) => ! is_null($column))
+            ->each(fn ($column, $table) => DB::table($table)->whereNull($column)->update([$column => $user->id]));
     }
 }
