@@ -6,11 +6,11 @@ use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
-use Webkul\TimeOff\Filament\Clusters\Management\Resources\TimeOffResource as BaseByEmployeeResource;
+use Webkul\TimeOff\Filament\Clusters\Management\Resources\TimeOffResource;
 use Webkul\TimeOff\Filament\Clusters\Reporting;
 use Webkul\TimeOff\Filament\Clusters\Reporting\Resources\ByEmployeeResource\Pages;
 
-class ByEmployeeResource extends BaseByEmployeeResource
+class ByEmployeeResource extends TimeOffResource
 {
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
