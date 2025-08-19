@@ -9,6 +9,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\MaxWidth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Webkul\Recruitment\Enums\RecruitmentState;
 use Webkul\Recruitment\Filament\Clusters\Applications\Resources\ApplicantResource;
@@ -89,6 +90,7 @@ class ListApplicants extends ListRecords
                 ->favorite()
                 ->modifyQueryUsing(function (Builder $query) {
                     return $query
+                        ->withoutGlobalScope(SoftDeletingScope::class)
                         ->where(function (Builder $subQuery) {
                             $subQuery
                                 ->whereNotNull('deleted_at')
