@@ -562,23 +562,18 @@ class CalendarWidget extends FullCalendarWidget
 
                 return [
                     'id'              => $leave->id,
-                    'title'           => $title,
+                    'title'           => __('time-off::filament/widgets/calendar-widget.events.title', [
+                        'name'   => $leave->user?->name,
+                        'status' => $leave->holidayStatus->name,
+                        'days'   => $leave->number_of_days,
+                    ]),
                     'start'           => $leave->request_date_from,
-                    'end'             => $leave->request_date_to ? Carbon::parse($leave->request_date_to)->addDay()->toDateString() : null,
+                    'end'             => $leave->request_date_to,
                     'allDay'          => true,
                     'backgroundColor' => $leave->holidayStatus?->color,
                     'borderColor'     => $leave->holidayStatus?->color,
                     'textColor'       => '#ffffff',
-                    'extendedProps'   => [
-                        'state'         => $leave->state,
-                        'business_days' => $businessDays,
-                        'weekend_days'  => $weekendDays,
-                        'total_days'    => $totalDays,
-                        'description'   => $leave->private_name,
-                        'type'          => $leave->holidayStatus->name,
-                        'isHalfDay'     => $leave->request_unit_half,
-                        'priority'      => $this->getEventPriority($leave->state),
-                    ],
+                    
                 ];
             })
             ->all();

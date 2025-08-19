@@ -8,12 +8,10 @@ return [
     'modal-actions' => [
         'edit' => [
             'title'                         => 'Edit',
-            'duration-display'              => ':count working day|:count working days',
-            'duration-display-with-weekend' => ':count working day (+ :weekend weekend day)|:count working days (+ :weekend weekend days)',
 
             'notification' => [
                 'title' => 'Time Off Updated',
-                'body'  => 'Your time off request has been updated successfully.',
+                'body'  => 'Time off request has been updated successfully.',
             ],
         ],
 
@@ -31,6 +29,11 @@ return [
         'create' => [
             'title'       => 'New Time Off',
             'description' => 'Create Time Off Request',
+
+            'notification' => [
+                'title' => 'Time Off Created',
+                'body'  => 'Time off request has been created successfully.',
+            ],
 
             'employee-not-found' => [
                 'notification' => [
