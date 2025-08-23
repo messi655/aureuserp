@@ -2,16 +2,17 @@
 
 namespace Webkul\TimeOff\Filament\Clusters\Reporting\Resources;
 
-use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Webkul\TimeOff\Filament\Clusters\Management\Resources\TimeOffResource;
 use Webkul\TimeOff\Filament\Clusters\Reporting;
 use Webkul\TimeOff\Filament\Clusters\Reporting\Resources\ByEmployeeResource\Pages;
+use Webkul\TimeOff\Models\Leave;
 
 class ByEmployeeResource extends TimeOffResource
 {
+    protected static ?string $model = Leave::class;
+    
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $cluster = Reporting::class;
